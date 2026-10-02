@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NEXUS // SYSTEM</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: #020608;
+    color: #00f7ff;
+    font-family: "Courier New", monospace;
+    overflow: hidden;
+}
+
+/* BACKGROUND GRID */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+        linear-gradient(rgba(0,247,255,.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,247,255,.06) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: grid 10s linear infinite;
+    pointer-events: none;
+}
+
+@keyframes grid {
+    from { transform: translateY(0); }
+    to { transform: translateY(40px); }
+}
+
+/* HEADER */
+
+header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    border-bottom: 1px solid #00f7ff;
+    background: rgba(0,20,25,.7);
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+    letter-spacing: 5px;
+    text-shadow: 0 0 15px #00f7ff;
+}
+
+.status {
+    font-size: 13px;
+}
+
+.dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    background: #00ff88;
+    border-radius: 50%;
+    box-shadow: 0 0 15px #00ff88;
+}
+
+/* MAIN */
+
+main {
+    height: calc(100vh - 70px);
+    padding: 25px;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 20px;
+}
+
+/* PANELS */
+
+.panel {
+    border: 1px solid #00f7ff;
+    background: rgba(0,20,25,.65);
+    padding: 20px;
+    box-shadow:
+        0 0 20px rgba(0,247,255,.08),
+        inset 0 0 20px rgba(0,247,255,.03);
+    position: relative;
+}
+
+.panel::before {
+    content: "";
+    position: absolute;
+    top: -1px;
+    left: 20px;
+    width: 80px;
+    height: 3px;
+    background: #00f7ff;
+    box-shadow: 0 0 10px #00f7ff;
+}
+
+.title {
+    font-size: 12px;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+}
+
+/* CLOCK */
+
+.clock {
+    text-align: center;
+    font-size: 35px;
+    font-weight: bold;
+    text-shadow: 0 0 15px #00f7ff;
+}
+
+.date {
+    text-align: center;
+    color: #78999d;
+    margin-top: 8px;
+}
+
+/* SYSTEM STATS */
+
+.stat {
+    margin: 25px 0;
+}
+
+.stat-name {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+}
+
+.bar {
+    height: 8px;
+    background: #062126;
+    margin-top: 8px;
+}
+
+.fill {
+    height: 100%;
+    background: #00f7ff;
+    box-shadow: 0 0 10px #00f7ff;
+    transition: width .5s;
+}
+
+.cpu { width: 72%; }
+.ram { width: 54%; }
+.gpu { width: 88%; }
+
+/* CENTER */
+
+.center {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* CORE */
+
+.core {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reactor {
+    width: 230px;
+    height: 230px;
+    border: 3px solid #00f7ff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow:
+        0 0 30px #00f7ff,
+        inset 0 0 40px rgba(0,247,255,.3);
+    animation: rotate 8s linear infinite;
+}
+
+.reactor::before {
+    content: "";
+    width: 110px;
+    height: 110px;
+    border: 2px dashed #00f7ff;
+    border-radius: 50%;
+}
+
+@keyframes rotate {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* TERMINAL */
+
+.terminal {
+    height: 230px;
+    overflow: hidden;
+    color: #00ff88;
+    font-size: 12px;
+}
+
+#terminalText {
+    line-height: 1.7;
+}
+
+/* BUTTONS */
+
+button {
+    width: 100%;
+    padding: 13px;
+    margin-top: 10px;
+    background: transparent;
+    border: 1px solid #00f7ff;
+    color: #00f7ff;
+    font-family: inherit;
+    cursor: pointer;
+    transition: .2s;
+}
+
+button:hover {
+    background: #00f7ff;
+    color: #001014;
+    box-shadow: 0 0 20px #00f7ff;
+}
+
+/* ALERT */
+
+.alert {
+    color: #ff405c;
+    text-shadow: 0 0 10px #ff405c;
+}
+
+/* MOBILE */
+
+@media(max-width:900px) {
+
+    body {
+        overflow: auto;
+    }
+
+    main {
+        height: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .reactor {
+        width: 180px;
+        height: 180px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="logo">
+NEXUS // AI
+</div>
+
+<div class="status">
+<span class="dot"></span>
+SYSTEM ONLINE
+</div>
+
+</header>
+
+
+<main>
+
+<!-- LEFT PANEL -->
+
+<section class="panel">
+
+<div class="title">
+SYSTEM STATUS
+</div>
+
+<div class="clock" id="clock">
+00:00:00
+</div>
+
+<div class="date" id="date">
+LOADING...
+</div>
+
+
+<div class="stat">
+
+<div class="stat-name">
+<span>CPU</span>
+<span id="cpuText">72%</span>
+</div>
+
+<div class="bar">
+<div class="fill cpu" id="cpu"></div>
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-name">
+<span>MEMORY</span>
+<span>54%</span>
+</div>
+
+<div class="bar">
+<div class="fill ram"></div>
+</div>
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-name">
+<span>GPU</span>
+<span>88%</span>
+</div>
+
+<div class="bar">
+<div class="fill gpu"></div>
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CENTER -->
+
+<section class="center">
+
+<div class="panel core">
+
+<div class="reactor"></div>
+
+</div>
+
+
+<div class="panel terminal">
+
+<div class="title">
+SYSTEM TERMINAL
+</div>
+
+<div id="terminalText">
+> Initializing NEXUS...<br>
+> Loading neural interface...<br>
+> Connecting modules...<br>
+> Security check... <span style="color:#00ff88">PASS</span><br>
+> All systems operational.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- RIGHT -->
+
+<section class="panel">
+
+<div class="title">
+CONTROL PANEL
+</div>
+
+<button onclick="scan()">
+[ RUN SYSTEM SCAN ]
+</button>
+
+<button onclick="boost()">
+[ PERFORMANCE BOOST ]
+</button>
+
+<button onclick="alertSystem()">
+[ SYSTEM ALERT ]
+</button>
+
+<button onclick="clearTerminal()">
+[ CLEAR TERMINAL ]
+</button>
+
+
+<br><br>
+
+<div class="title">
+NETWORK
+</div>
+
+<p>UPLINK: <b>CONNECTED</b></p>
+<p>LATENCY: <b id="ping">24 ms</b></p>
+<p>ENCRYPTION: <b>AES-256</b></p>
+
+</section>
+
+</main>
+
+
+<script>
+
+/* CLOCK */
+
+function updateClock() {
+
+    const now = new Date();
+
+    document.getElementById("clock")
+        .innerText = now.toLocaleTimeString();
+
+    document.getElementById("date")
+        .innerText = now.toDateString();
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+
+
+/* RANDOM CPU */
+
+setInterval(() => {
+
+    let cpu = Math.floor(
+        Math.random() * 30 + 50
+    );
+
+    document.getElementById("cpu").style.width =
+        cpu + "%";
+
+    document.getElementById("cpuText")
+        .innerText = cpu + "%";
+
+}, 2000);
+
+
+/* TERMINAL */
+
+function writeTerminal(text) {
+
+    const terminal =
+        document.getElementById("terminalText");
+
+    terminal.innerHTML +=
+        "<br>> " + text;
+}
+
+
+/* SCAN */
+
+function scan() {
+
+    writeTerminal("Scanning system...");
+
+    setTimeout(() => {
+        writeTerminal(
+            "No critical threats detected."
+        );
+    }, 1000);
+
+}
+
+
+/* BOOST */
+
+function boost() {
+
+    writeTerminal(
+        "Performance boost activated."
+    );
+
+    document.getElementById("cpu")
+        .style.width = "96%";
+
+    document.getElementById("cpuText")
+        .innerText = "96%";
+
+}
+
+
+/* ALERT */
+
+function alertSystem() {
+
+    writeTerminal(
+        '<span class="alert">WARNING: SYSTEM ALERT TRIGGERED!</span>'
+    );
+
+}
+
+
+/* CLEAR */
+
+function clearTerminal() {
+
+    document.getElementById("terminalText")
+        .innerHTML =
+        "> Terminal cleared.";
+
+}
+
+</script>
+
+</body>
+</html>
