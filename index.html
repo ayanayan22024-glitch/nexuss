@@ -508,6 +508,12 @@ function clearTerminal() {
 }
 
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js")
+    .then(() => console.log("NEXUS service worker active"))
+    .catch(err => console.log("Service worker error:", err));
+}
+</script>
 </body>
 </html>
