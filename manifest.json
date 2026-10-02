@@ -1,2 +1,10 @@
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#00f7ff">
+{
+  "name": "NEXUS // AI",
+  "short_name": "NEXUS",
+  "description": "Futuristic computer interface",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#020608",
+  "theme_color": "#00f7ff"
+}
